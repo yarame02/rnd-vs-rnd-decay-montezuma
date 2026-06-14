@@ -86,15 +86,15 @@ Une variante de l'algorithme original a été développée :
 
 L'idée consiste à réduire progressivement l'influence de la récompense intrinsèque :
 
-\[
-A = (\lambda \times \text{RND\_Decay}) \times A_{int} + A_{ext}
-\]
+```text
+A = (λ × RND_Decay) × A_int + A_ext
+```
 
 où :
 
-- \(A_{int}\) représente l'avantage intrinsèque ;
-- \(A_{ext}\) représente l'avantage extrinsèque ;
-- \(RND\_Decay\) diminue progressivement au cours de l'entraînement.
+- `A_int` représente l'avantage intrinsèque ;
+- `A_ext` représente l'avantage extrinsèque ;
+- `RND_Decay` diminue progressivement au cours de l'entraînement.
 
 Cette modification vise à :
 
