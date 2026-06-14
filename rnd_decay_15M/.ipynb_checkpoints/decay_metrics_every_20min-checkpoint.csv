@@ -1,0 +1,2 @@
+timestamp,tcount,time_elapsed,tps,best_ret,eprew,rewtotal,n_rooms,rooms,eplen,epcount,retintmean,rewintmean_norm,rewintmean_unnorm,retextmean,recent_ext_mean,rnd_decay,int_coeff_effective,opt_auxloss,opt_ent,opt_approxkl,opt_clipfrac
+2026-06-02 15:42:09,2.14e+05,477,529,0,0,0,1,[1],344,581,0.716,0.00639,0.0823,0.000853,0,1,1,0.0833,2.77,0.00119,0
