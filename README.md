@@ -91,31 +91,24 @@ random-network-distillation+Results/
 
 ---
 
-# Modification proposée
+### Formule utilisée
 
-La principale contribution de ce projet consiste à introduire un coefficient de décroissance appliqué à la récompense intrinsèque :
-
-\[
-A_{total}
-=
-(\lambda_{decay}\times A_{int})
-+
-A_{ext}
-\]
+```text
+A_total = int_coeff × rnd_decay × A_int + ext_coeff × A_ext
+```
 
 où :
 
-- \(A_{int}\) représente l'avantage intrinsèque ;
-- \(A_{ext}\) représente l'avantage extrinsèque ;
-- \(\lambda_{decay}\) est un coefficient de décroissance évoluant progressivement au cours de l'entraînement.
+- **A_int** représente l'avantage intrinsèque ;
+- **A_ext** représente l'avantage extrinsèque ;
+- **rnd_decay** est un coefficient décroissant progressivement au cours de l'entraînement ;
+- **int_coeff** est le coefficient de pondération de la récompense intrinsèque.
 
-Ce mécanisme vise à :
+Cette modification permet :
 
-- favoriser une forte exploration au début de l'apprentissage ;
-- diminuer progressivement l'influence de la curiosité ;
-- encourager davantage l'exploitation lorsque l'agent commence à découvrir des stratégies efficaces.
-
----
+- de favoriser une forte exploration au début de l'apprentissage ;
+- de diminuer progressivement l'influence de la curiosité ;
+- d'encourager davantage l'exploitation lorsque l'agent découvre des stratégies efficaces.
 
 # Principaux résultats expérimentaux
 
