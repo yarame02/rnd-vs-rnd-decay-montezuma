@@ -15,3 +15,6 @@ dist-packages/
 Thumbs.db
 
 *.log
+
+*.bak
+*.bak_*

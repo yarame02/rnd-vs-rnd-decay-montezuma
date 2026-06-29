@@ -1,162 +1,232 @@
-# Reproduction de Random Network Distillation (RND) et variante RND+Decay
+# Reproduction de Random Network Distillation (RND) et proposition de la variante RND + Decay
 
 ## Présentation
 
-Ce projet a été réalisé dans le cadre d'un projet de recherche en apprentissage par renforcement visant à reproduire les résultats de l'article :
+Ce dépôt contient la reproduction complète de l'article :
 
-> Burda, Y., Edwards, H., Pathak, D., Storkey, A., Darrell, T. & Efros, A. A. (2018)
+> **Burda, Y., Edwards, H., Pathak, D., Storkey, A., Darrell, T., & Efros, A. A. (2018).**
 >
 > **Exploration by Random Network Distillation**
+>
+> *International Conference on Learning Representations (ICLR).*
 
-L'étude porte sur le jeu Atari **Montezuma's Revenge**, un environnement réputé difficile en raison de la rareté des récompenses et de la nécessité d'une exploration efficace.
+Ce projet a été réalisé dans le cadre d'un projet de Master consacré à l'apprentissage par renforcement.
 
-En complément de la reproduction de l'algorithme original **Random Network Distillation (RND)**, une variante appelée **RND+Decay** a été développée afin d'étudier l'impact d'une diminution progressive du poids de la récompense intrinsèque au cours de l'apprentissage.
+En plus de reproduire fidèlement l'algorithme original **Random Network Distillation (RND)** proposé par OpenAI, ce travail introduit une variante appelée **RND + Decay**, dont l'objectif est de diminuer progressivement l'influence de la récompense intrinsèque afin d'étudier son impact sur le compromis entre exploration et exploitation.
 
----
-
-## Objectifs
-
-Les principaux objectifs de ce travail sont :
-
-- Reproduire l'algorithme RND proposé par OpenAI ;
-- Vérifier la capacité de l'algorithme à explorer efficacement Montezuma's Revenge ;
-- Implémenter une variante RND+Decay ;
-- Comparer les performances des deux approches ;
-- Étudier le compromis entre exploration et exploitation.
+Toutes les expériences ont été réalisées sur le jeu Atari **Montezuma's Revenge**, l'un des environnements de référence les plus difficiles en apprentissage par renforcement en raison de la rareté des récompenses.
 
 ---
 
-## Configuration expérimentale
+# Objectifs
+
+Les principaux objectifs de ce projet sont les suivants :
+
+- reproduire l'implémentation originale de RND proposée par OpenAI ;
+- reconstruire entièrement l'environnement expérimental utilisé dans l'article ;
+- analyser le comportement exploratoire de RND ;
+- proposer et implémenter la variante **RND + Decay** ;
+- comparer les performances de PPO, RND et RND + Decay ;
+- réaliser une analyse statistique à une seed puis à cinq seeds indépendantes.
+
+---
+
+# Configuration expérimentale
 
 | Élément | Valeur |
 |----------|----------|
 | Environnement | MontezumaRevengeNoFrameskip-v4 |
-| Algorithme de base | Random Network Distillation (RND) |
 | Framework | TensorFlow 1.15 |
-| GPU | NVIDIA A100 80 Go |
+| GPU | NVIDIA A100 PCIe 80 Go |
 | Plateforme | RunPod |
 | Nombre d'environnements parallèles | 32 |
-| Budget d'entraînement | ≈ 15 millions de frames |
-| Jeu étudié | Montezuma's Revenge |
+| Budget d'entraînement | 15 millions de timesteps |
+| Nombre de seeds | 5 par méthode |
+| Méthodes étudiées | PPO, RND et RND + Decay |
 
 ---
 
-## Structure du dépôt
+# Structure du dépôt
 
 ```text
-random-network-distillation/
+random-network-distillation+Results/
+
+├── random-network-distillation/
+│   ├── Code source original OpenAI
+│   ├── Implémentation de RND + Decay
+│   ├── Scripts d'entraînement
+│   ├── Scripts d'analyse
+│   └── Utilitaires
 │
-├── Code source original et modifications apportées
+├── rnd_classic_15M/
+│   ├── Checkpoints
+│   ├── Journaux d'entraînement
+│   ├── Vidéos
+│   └── Fichiers TensorBoard
 │
-rnd_classic_15M/
+├── rnd_decay_15M/
+│   ├── Checkpoints
+│   ├── Journaux d'entraînement
+│   ├── Vidéos
+│   └── Fichiers TensorBoard
 │
-├── Logs d'entraînement
-├── Fichiers de sauvegarde
-├── Métriques expérimentales
+├── rnd_multiseed/
+│   ├── ppo_baseline/
+│   ├── rnd_classic/
+│   └── rnd_decay/
 │
-rnd_decay_15M/
+├── multiseed_analysis_3methods/
+│   ├── Courbes comparatives
+│   ├── Fichiers CSV
+│   ├── Tableaux récapitulatifs
+│   └── Analyses statistiques
 │
-├── Logs d'entraînement
-├── Fichiers de sauvegarde
-├── Métriques expérimentales
+├── rnd_classic_courbes_csv_videos/
 │
-rnd_classic_coubes_csv_videos/
+├── rnd_decay_courbes_csv_videos/
 │
-├── Courbes d'apprentissage
-├── Fichiers CSV
-├── Vidéos de gameplay
-│
-rnd_decay_courbes_csv_videos/
-│
-├── Courbes d'apprentissage
-├── Fichiers CSV
-├── Vidéos de gameplay
-│
-README_RESULTATS.txt
-└── Résumé détaillé des résultats
+├── README.md
+└── README_RESULTATS.txt
 ```
 
 ---
 
-## Modifications apportées
+# Modification proposée
 
-Une variante de l'algorithme original a été développée :
+La principale contribution de ce projet consiste à introduire un coefficient de décroissance appliqué à la récompense intrinsèque :
 
-### RND+Decay
-
-L'idée consiste à réduire progressivement l'influence de la récompense intrinsèque :
-
-```text
-A = (λ × RND_Decay) × A_int + A_ext
-```
+\[
+A_{total}
+=
+(\lambda_{decay}\times A_{int})
++
+A_{ext}
+\]
 
 où :
 
-- `A_int` représente l'avantage intrinsèque ;
-- `A_ext` représente l'avantage extrinsèque ;
-- `RND_Decay` diminue progressivement au cours de l'entraînement.
+- \(A_{int}\) représente l'avantage intrinsèque ;
+- \(A_{ext}\) représente l'avantage extrinsèque ;
+- \(\lambda_{decay}\) est un coefficient de décroissance évoluant progressivement au cours de l'entraînement.
 
-Cette modification vise à :
+Ce mécanisme vise à :
 
-- favoriser l'exploration au début ;
-- encourager davantage l'exploitation lorsque l'agent maîtrise mieux l'environnement.
-
----
-
-## Résultats principaux
-
-### RND Classique
-
-- Meilleure récompense observée : ≈ 1400
-- Récompense moyenne des meilleurs épisodes : ≈ 1360
-- Nombre maximal de salles explorées : **11**
-
-### RND+Decay
-
-- Meilleure récompense observée : ≈ 2600
-- Récompense moyenne des meilleurs épisodes : ≈ 2400
-- Nombre maximal de salles explorées : **6**
-- Coefficient de décroissance final : **0.1**
+- favoriser une forte exploration au début de l'apprentissage ;
+- diminuer progressivement l'influence de la curiosité ;
+- encourager davantage l'exploitation lorsque l'agent commence à découvrir des stratégies efficaces.
 
 ---
 
-## Comparaison des approches
+# Principaux résultats expérimentaux
 
-| Méthode | Récompense | Exploration |
-|----------|----------|----------|
-| RND Classique | Plus faible | Plus importante |
-| RND+Decay | Plus élevée | Plus limitée |
+## Expériences à une seed
 
-Observation principale :
+| Méthode | Meilleur score | Nombre maximal de salles |
+|----------|---------------|--------------------------|
+| RND | 1400 | 11 |
+| RND + Decay | 2600 | 6 |
 
-- Le RND classique explore davantage l'environnement.
-- Le RND+Decay obtient des récompenses plus élevées mais visite moins de nouvelles salles.
-- Le mécanisme de décroissance favorise progressivement l'exploitation au détriment de l'exploration.
+La variante proposée permet d'obtenir un score maximal plus élevé, mais au prix d'une exploration plus limitée de l'environnement.
 
 ---
 
-## Contenu du dépôt
+## Validation statistique à cinq seeds
 
-Le dépôt contient :
+Afin d'évaluer la robustesse des résultats, cinq graines aléatoires indépendantes ont été exécutées pour chacune des trois méthodes :
 
-- le code source complet ;
+- PPO Baseline ;
+- RND classique ;
+- RND + Decay.
+
+Le dépôt contient notamment :
+
+- les courbes moyennes d'apprentissage ;
+- les écarts-types ;
+- les intervalles de confiance à 95 % ;
+- les coefficients de variation ;
+- les statistiques détaillées par seed ;
+- les courbes comparatives des trois méthodes.
+
+Cette campagne expérimentale complète les expériences à une seed en permettant d'évaluer la variabilité des performances.
+
+---
+
+# Principales observations
+
+Les expériences réalisées mettent en évidence plusieurs tendances :
+
+- le RND classique explore un plus grand nombre de salles ;
+- RND + Decay exploite plus efficacement les comportements déjà appris ;
+- PPO présente la plus forte variabilité entre les différentes seeds ;
+- les différences observées entre les trois méthodes restent modestes compte tenu du budget expérimental disponible.
+
+Les expériences multi-seeds doivent donc être interprétées comme une validation de robustesse et non comme une démonstration définitive de la supériorité d'une méthode.
+
+---
+
+# Budget expérimental
+
+Toutes les expériences ont été réalisées sur une instance **NVIDIA A100 PCIe de 80 Go** louée sur la plateforme **RunPod**.
+
+Le projet comprend notamment :
+
+- les essais préliminaires ;
+- la reconstruction complète de l'environnement logiciel ;
+- la reproduction du pipeline original ;
+- les expériences à une seed (PPO, RND et RND + Decay) ;
+- la campagne de validation statistique à cinq seeds.
+
+L'ensemble de ces expériences représente un coût de calcul estimé à environ :
+
+- **70 USD** ;
+- soit environ **50 000 FCFA**.
+
+Une campagne expérimentale de plus grande ampleur (plusieurs dizaines de seeds ou plusieurs centaines de millions de timesteps) aurait nécessité un budget de calcul nettement supérieur.
+
+---
+
+# Reproductibilité
+
+Ce dépôt contient l'ensemble des éléments nécessaires à la reproduction des expériences :
+
+- le code source original ;
 - les modifications apportées à l'algorithme ;
+- les scripts d'entraînement ;
+- les scripts d'analyse ;
 - les journaux d'entraînement ;
+- les checkpoints ;
+- les fichiers TensorBoard ;
 - les métriques au format CSV ;
+- les analyses statistiques ;
 - les courbes d'apprentissage ;
-- les vidéos de gameplay ;
-- les résultats expérimentaux.
+- les vidéos de gameplay.
 
-L'objectif est de garantir la reproductibilité complète des expériences réalisées.
+L'ensemble des résultats présentés dans le rapport peut ainsi être reproduit et vérifié.
 
 ---
 
-## Auteur
+# Auteur
 
 **Yarame BA**
 
-Master Science des Données et Applications (IIA)
+Master Science des Données et Applications  
+Option : Ingénierie des Données et Intelligence Artificielle (IIA)
 
 Université Iba Der Thiam de Thiès (UIDT)
 
-Projet de reproduction et d'analyse de Random Network Distillation sur Montezuma's Revenge.
+Année universitaire 2025–2026
+
+---
+
+# Référence bibliographique
+
+Si vous utilisez ce dépôt, merci de citer l'article original :
+
+```bibtex
+@inproceedings{burda2018exploration,
+  title={Exploration by Random Network Distillation},
+  author={Burda, Yuri and Edwards, Harrison and Pathak, Deepak and Storkey, Amos and Darrell, Trevor and Efros, Alexei A.},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2019}
+}
+```

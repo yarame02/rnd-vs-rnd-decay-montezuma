@@ -85,6 +85,7 @@ def train(*, env_id, num_env, hps, num_timesteps, seed):
 def add_env_params(parser):
     parser.add_argument('--env', help='environment ID', default='MontezumaRevengeNoFrameskip-v4')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
+    parser.add_argument('--log_dir', help='Output directory for logs and videos', type=str, default=None)
     parser.add_argument('--max_episode_steps', type=int, default=4500)
 
 
@@ -109,7 +110,7 @@ def main():
 
 
     args = parser.parse_args()
-    logger.configure(dir=logger.get_dir(), format_strs=['stdout', 'log', 'csv'] if MPI.COMM_WORLD.Get_rank() == 0 else [])
+    logger.configure(dir=args.log_dir if args.log_dir is not None else logger.get_dir(), format_strs=['stdout', 'log', 'csv'] if MPI.COMM_WORLD.Get_rank() == 0 else [])
     if MPI.COMM_WORLD.Get_rank() == 0:
         with open(os.path.join(logger.get_dir(), 'experiment_tag.txt'), 'w') as f:
             f.write(args.tag)

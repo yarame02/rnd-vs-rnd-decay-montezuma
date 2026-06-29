@@ -1,0 +1,113 @@
+Logging to /workspace/RND_FINAL_REPORT_EXPORT/rnd_multiseed/rnd_classic/seed_0
+CnnGruPolicy: using 'ppo/strided_slice_2:0' shape (?, ?, 84, 84, 4) as image input
+CnnGruPolicy: using 'ppo/obs:0' shape (?, ?, 84, 84, 4) as image input
+CnnTarget: using 'ppo/obs:0' shape (?, ?, 84, 84, 4) as image input
+CnnTarget: using 'ppo/obs:0' shape (?, ?, 84, 84, 4) as image input
+PPO: using MpiAdamOptimizer connected to 1 peers
+   ppo/pol/c1/w:0                                          8192 params (8, 8, 4, 32)
+   ppo/pol/c2/w:0                                          32768 params (4, 4, 32, 64)
+   ppo/pol/c3/w:0                                          65536 params (4, 4, 64, 64)
+   ppo/pol/fc1/w:0                                         589824 params (2304, 256)
+   ppo/pol/rnn/gru_cell/mr/w:0                             262144 params (512, 512)
+   ppo/pol/rnn/gru_cell/htil/w:0                           131072 params (512, 256)
+   ppo/pol/fc2val/w:0                                      65536 params (256, 256)
+   ppo/pol/fc2act/w:0                                      65536 params (256, 256)
+   ppo/pol/pd/w:0                                          4608 params (256, 18)
+   ppo/pol/vf_int/w:0                                      256 params (256, 1)
+   ppo/pol/vf_ext/w:0                                      256 params (256, 1)
+   ppo/c1r/w:0                                             2048 params (8, 8, 1, 32)
+   ppo/c2r/w:0                                             32768 params (4, 4, 32, 64)
+   ppo/c3r/w:0                                             36864 params (3, 3, 64, 64)
+   ppo/fc1r/w:0                                            1605632 params (3136, 512)
+   ppo/c1rp_pred/w:0                                       2048 params (8, 8, 1, 32)
+   ppo/c2rp_pred/w:0                                       32768 params (4, 4, 32, 64)
+   ppo/c3rp_pred/w:0                                       36864 params (3, 3, 64, 64)
+   ppo/fc1r_hat1_pred/w:0                                  1605632 params (3136, 512)
+   ppo/fc1r_hat2_pred/w:0                                  262144 params (512, 512)
+   ppo/fc1r_hat3_pred/w:0                                  262144 params (512, 512)
+Total model parameters: 5.11 million
+Rooms visited []
+Best return -inf
+Best local return [-inf]
+eprews [nan]
+n_rooms [0]
+Extrinsic coefficient 2.0
+Gamma 0.99
+Gamma ext 0.99
+All scores []
+buffer shape (32, 128), samples_per_mpi=4096, mini_per_mpi=1024, samples=4096, mini=1024 
+                tot |            pg |            vf |           ent |      clipfrac |      approxkl |         maxkl |       auxloss |       featvar |       maxfeat |      gradnorm
+0:000       0.69147 |      -0.68043 |       0.26898 |       2.89037 |       0.00000 |      1.67e-16 |      2.84e-14 |       1.10581 |       0.43978 |       4.42619 |       2.60841
+0:008       0.51158 |      -0.61557 |       0.21982 |       2.89036 |       0.00000 |      4.32e-06 |      7.34e-06 |       0.91023 |       0.41644 |       4.11149 |       2.15659
+0:016       0.42928 |      -0.63614 |       0.22625 |       2.89035 |       0.00000 |      1.22e-05 |      2.99e-05 |       0.84206 |       0.41368 |       4.09803 |       2.18283
+0:024       0.30191 |      -0.54286 |       0.17716 |       2.89034 |       0.00000 |      2.32e-05 |      5.55e-05 |       0.67049 |       0.34496 |       4.25709 |       1.90603
+1:000       0.33901 |      -0.68119 |       0.24857 |       2.89032 |       0.00000 |      4.30e-05 |       0.00010 |       0.77451 |       0.43978 |       4.42619 |       2.55544
+1:008       0.25695 |      -0.61584 |       0.19911 |       2.89028 |       0.00000 |      8.61e-05 |       0.00021 |       0.67657 |       0.41644 |       4.11149 |       2.47053
+1:016       0.21160 |      -0.63652 |       0.20164 |       2.89020 |       0.00000 |       0.00015 |       0.00039 |       0.64936 |       0.41368 |       4.09803 |       2.78525
+1:024       0.14477 |      -0.54344 |       0.15335 |       2.89011 |       0.00000 |       0.00025 |       0.00063 |       0.53776 |       0.34496 |       4.25709 |       2.52482
+2:000       0.17311 |      -0.68253 |       0.21351 |       2.88995 |       0.00000 |       0.00039 |       0.00100 |       0.64502 |       0.43978 |       4.42619 |       3.54546
+2:008       0.12602 |      -0.61632 |       0.16364 |       2.88970 |       0.00000 |       0.00066 |       0.00163 |       0.58160 |       0.41644 |       4.11149 |       3.35568
+2:016       0.08835 |      -0.63730 |       0.16013 |       2.88934 |       0.00000 |       0.00098 |       0.00260 |       0.56841 |       0.41368 |       4.09803 |       3.70826
+2:024       0.04847 |      -0.54468 |       0.11573 |       2.88885 |       0.00000 |       0.00149 |       0.00381 |       0.48031 |       0.34496 |       4.25709 |       3.10539
+3:000       0.05721 |      -0.68477 |       0.15899 |       2.88818 |       0.05469 |       0.00210 |       0.00554 |       0.58588 |       0.43978 |       4.42619 |       4.40427
+3:008       0.02971 |      -0.61640 |       0.11281 |       2.88736 |       0.21484 |       0.00302 |       0.00804 |       0.53618 |       0.41644 |       4.11149 |       3.83146
+3:016      -0.00671 |      -0.63652 |       0.10452 |       2.88656 |       0.41504 |       0.00371 |       0.01133 |       0.52818 |       0.41368 |       4.09803 |       4.02640
+3:024      -0.02485 |      -0.54474 |       0.07252 |       2.88603 |       0.43457 |       0.00436 |       0.01395 |       0.45026 |       0.34496 |       4.25709 |       2.79896
+---------------------------------
+| advmean           | 0.619     |
+| advstd            | 0.276     |
+| best_ret          | -inf      |
+| epcount           | 0         |
+| eprew             | nan       |
+| ev_ext            | -1        |
+| ev_int            | -0.000129 |
+| mem_available     | 9.15e+11  |
+| n_rooms           | 0         |
+| n_updates         | 1         |
+| opt_approxkl      | 0.00436   |
+| opt_auxloss       | 0.45      |
+| opt_clipfrac      | 0.435     |
+| opt_ent           | 2.89      |
+| opt_featvar       | 0.345     |
+| opt_gradnorm      | 2.8       |
+| opt_maxfeat       | 4.26      |
+| opt_maxkl         | 0.014     |
+| opt_pg            | -0.545    |
+| opt_tot           | -0.0249   |
+| opt_vf            | 0.0725    |
+| reset_counter     | 0         |
+| retextmean        | -0.00288  |
+| retextstd         | 0.000172  |
+| retintmean        | 0.62      |
+| retintstd         | 0.276     |
+| rewintmax_norm    | 0.105     |
+| rewintmax_unnorm  | 2.48      |
+| rewintmean_norm   | 0.0429    |
+| rewintmean_unnorm | 1.01      |
+| rewintstd_unnorm  | 0.492     |
+| rooms             | []        |
+| tcount            | 0         |
+| time_elapsed      | 80        |
+| tps               | 51.2      |
+| vpredextmean      | -0.00334  |
+| vpredextstd       | 0.000449  |
+| vpredintmean      | 0.00245   |
+| vpredintstd       | 0.00039   |
+| wait_step         | 38.1      |
+| wait_update       | 32.7      |
+---------------------------------
+Rooms visited []
+Best return -inf
+Best local return [-inf]
+eprews [nan]
+n_rooms [0]
+Extrinsic coefficient 2.0
+Gamma 0.99
+Gamma ext 0.99
+All scores []
+buffer shape (32, 128), samples_per_mpi=4096, mini_per_mpi=1024, samples=4096, mini=1024 
+                tot |            pg |            vf |           ent |      clipfrac |      approxkl |         maxkl |       auxloss |       featvar |       maxfeat |      gradnorm
+0:000       0.25602 |      -0.31475 |       0.06420 |       2.88567 |       0.00000 |      1.83e-15 |      2.84e-14 |       0.50946 |       0.41077 |       4.30962 |       3.89710
+0:008       0.22418 |      -0.31030 |       0.04575 |       2.88532 |       0.00000 |      3.83e-05 |       0.00010 |       0.49162 |       0.39343 |       4.41075 |       3.50719
+0:016       0.21960 |      -0.32409 |       0.03650 |       2.88498 |       0.00000 |       0.00015 |       0.00041 |       0.51008 |       0.41246 |       4.41912 |       3.25259
+0:024       0.19013 |      -0.30292 |       0.02234 |       2.88457 |       0.00000 |       0.00038 |       0.00097 |       0.47360 |       0.38356 |       4.21865 |       2.42463
